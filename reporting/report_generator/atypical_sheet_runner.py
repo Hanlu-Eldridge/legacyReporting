@@ -123,24 +123,19 @@ def process_raw_data(date: str, inputdir: str, choices_port: list, target_portfo
     return df_transaction, df_positions, df_sec_master
 
 
-
-
-
-
-
 def generate_excel_report(date: str, inputdir: str, outputdir: str):
-    formatted_date = date.strftime("%m-%d-%Y")
     # change this if using different portfolio
-    # ============================configuration section=========================
+    # ============================configuration section FOR SBL_Strategy Report=========================
     choices_port = ['43CH;IG CLO Strategy', '43CH;IG CLO Strategy', '44K8;HY CLO Strategy', '44F6;Atypical CLO Strategy', '44D7;ABS Strategy',
                     '44D7;ABS Strategy']
     target_portfolio_list = ['SBL_103_103', 'SBL_404_404', 'SBL_111_111', 'SBL_107_107','SBL_104_104','SBL_105_105']
     output_filename = 'SBL_Strategy'
     template_filename = 'SBL_CLO_100_Template.xlsx'
-    holdings_file = '/Panagram Holding File ' + date + '.xlsx'
-    manager_table_start = 'B38'
+    holdings_file = '/Panagram Holding File 07-31-2025.xlsx'
+    manager_table_start = 'B55'
 
     # ============================configuration section=========================
+    formatted_date = date.strftime("%m-%d-%Y")
     # get all the raw data tables
     df_transaction, df_positions, df_sec_master = process_raw_data(formatted_date, inputdir, choices_port, target_portfolio_list, holdings_file)
     print('=========Processed all the raw data in :', inputdir, '=========')
