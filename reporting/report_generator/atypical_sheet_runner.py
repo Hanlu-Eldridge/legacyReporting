@@ -6,14 +6,14 @@ import shutil
 import openpyxl
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.utils import get_column_letter
-from reporting.utils import update_report_tables, get_tranche_df
+from reporting.utils import update_report_tables, get_tranche_df, get_empty_df
 
 
 # palceholder for datasets, to be replaced with Snowflake holdings table, transaction table and security master table
 #  . .\.venv\Scripts\Activate.ps1
 # dir = "C:/Users/XiaHanlu/workspace/legacyReporting/local_reading/panagram"
 # date = '04-30-2025'
-def process_raw_data(date: str, inputdir: str, choices_port: list, target_portfolio_list: list, holdings_file : str):
+def process_raw_data(inputdir: str, choices_port: list, target_portfolio_list: list, holdings_file : str, transaction_file: str):
     map_dict = dict(zip(target_portfolio_list, choices_port))
     # read in the holdings table
     df_holding = pd.read_excel(inputdir + holdings_file,
@@ -30,7 +30,7 @@ def process_raw_data(date: str, inputdir: str, choices_port: list, target_portfo
     df_trader_info['Manager'] = df_trader_info['Manager'].fillna('Unknown')
 
     # creating transactions table
-    df_transaction = pd.read_excel(inputdir + '/Security Transactions.xlsx', sheet_name='DBO_Security Transactions', index_col=None, header=0,
+    df_transaction = pd.read_excel(inputdir + transaction_file, sheet_name='DBO_Security Transactions', index_col=None, header=0,
                                    usecols=['Portfolio', 'Security ID', 'Tran Type', 'Security Description', 'Coupon Rate',
                                             'Trade Date', 'Settle Date', 'Maturity Date', 'Quantity', 'Price', 'Cost Proceeds'])
     # filter only for portfolios that we care
@@ -131,13 +131,14 @@ def generate_excel_report(date: str, inputdir: str, outputdir: str):
     target_portfolio_list = ['SBL_103_103', 'SBL_404_404', 'SBL_111_111', 'SBL_107_107','SBL_104_104','SBL_105_105']
     output_filename = 'SBL_Strategy'
     template_filename = 'SBL_CLO_100_Template.xlsx'
-    holdings_file = '/Panagram Holding File 07-31-2025.xlsx'
+    holdings_file = 'Panagram Holding File 08-31-2025.xlsx'
+    transaction_file = 'Security Transactions_20250831.xlsx'
     manager_table_start = 'B55'
 
     # ============================configuration section=========================
     formatted_date = date.strftime("%m-%d-%Y")
     # get all the raw data tables
-    df_transaction, df_positions, df_sec_master = process_raw_data(formatted_date, inputdir, choices_port, target_portfolio_list, holdings_file)
+    df_transaction, df_positions, df_sec_master = process_raw_data(inputdir, choices_port, target_portfolio_list, holdings_file, transaction_file)
     print('=========Processed all the raw data in :', inputdir, '=========')
 
     # Prepare the Manager Table
@@ -213,6 +214,8 @@ def generate_excel_report(date: str, inputdir: str, outputdir: str):
                            how='left', left_on='Security ID', right_on='cusip')
     df_purchase = df_purchase.rename(
         columns={'Security ID': 'Cusip', 'Issuer Name': 'Issuer', 'Price': 'Purchase Price'})
+
+    df_sale = get_empty_df(df_sale)
 
     print('=========Processed all the report table=========')
 
