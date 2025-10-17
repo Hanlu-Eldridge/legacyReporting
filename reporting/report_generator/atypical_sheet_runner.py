@@ -13,7 +13,7 @@ from reporting.utils import update_report_tables, get_tranche_df, get_empty_df
 #  . .\.venv\Scripts\Activate.ps1
 # dir = "C:/Users/XiaHanlu/workspace/legacyReporting/local_reading/panagram"
 # date = '04-30-2025'
-def process_raw_data(inputdir: str, choices_port: list, target_portfolio_list: list, holdings_file : str, transaction_file: str):
+def process_raw_data(inputdir: str, choices_port: list, target_portfolio_list: list, holdings_file : str, transaction_file: str, input_from_jared :str):
     map_dict = dict(zip(target_portfolio_list, choices_port))
     # read in the holdings table
     df_holding = pd.read_excel(inputdir + holdings_file,
@@ -26,7 +26,7 @@ def process_raw_data(inputdir: str, choices_port: list, target_portfolio_list: l
     df_holding = df_holding[df_holding['BASEMarket Value'] != 0]
 
     # read in the data we requested from the investment team, contact John Rozario and Aaron Zhang for details
-    df_trader_info = pd.read_excel(inputdir + '/Input_From_Jared.xlsx', sheet_name='Sheet1', index_col=None, header=0)
+    df_trader_info =  pd.read_csv(inputdir + input_from_jared)
     df_trader_info['Manager'] = df_trader_info['Manager'].fillna('Unknown')
 
     # creating transactions table
@@ -43,8 +43,7 @@ def process_raw_data(inputdir: str, choices_port: list, target_portfolio_list: l
     df_sec_master = pd.DataFrame(unique_cusips, columns=['cusip'])
     df_sec_master = pd.merge(df_sec_master, df_trader_info, how='left', left_on='cusip', right_on='Row Labels')
 
-    df_sec_master[['SP Rating', 'Moody Rating', 'Fitch Rating', 'KBRA Rating', 'DBRS Rating']] = df_sec_master[
-        ['SP Rating', 'Moody Rating', 'Fitch Rating', 'KBRA Rating', 'DBRS Rating']].apply(lambda x: x.str.strip())
+    #df_sec_master[['SP Rating', 'Moody Rating', 'Fitch Rating', 'KBRA Rating', 'DBRS Rating']] = df_sec_master[['SP Rating', 'Moody Rating', 'Fitch Rating', 'KBRA Rating', 'DBRS Rating']].astype(str).apply(lambda x: x.str.strip())
     df_sec_master[['SP Rating', 'Moody Rating', 'Fitch Rating', 'KBRA Rating', 'DBRS Rating']] = df_sec_master[
         ['SP Rating', 'Moody Rating', 'Fitch Rating', 'KBRA Rating', 'DBRS Rating']].fillna('NR')
 
@@ -131,19 +130,20 @@ def generate_excel_report(date: str, inputdir: str, outputdir: str):
     target_portfolio_list = ['SBL_103_103', 'SBL_404_404', 'SBL_111_111', 'SBL_107_107','SBL_104_104','SBL_105_105']
     output_filename = 'SBL_Strategy'
     template_filename = 'SBL_CLO_100_Template.xlsx'
-    holdings_file = 'Panagram Holding File 08-31-2025.xlsx'
-    transaction_file = 'Security Transactions_20250831.xlsx'
+    holdings_file = 'Panagram Holding File 09-30-2025.xlsx'
+    transaction_file = 'Security Transactions_20250930.xlsx'
+    input_from_jared = 'Data_request_20250930.csv'
     manager_table_start = 'B55'
 
     # ============================configuration section=========================
     formatted_date = date.strftime("%m-%d-%Y")
     # get all the raw data tables
-    df_transaction, df_positions, df_sec_master = process_raw_data(inputdir, choices_port, target_portfolio_list, holdings_file, transaction_file)
+    df_transaction, df_positions, df_sec_master = process_raw_data(inputdir, choices_port, target_portfolio_list, holdings_file, transaction_file, input_from_jared)
     print('=========Processed all the raw data in :', inputdir, '=========')
 
     # Prepare the Manager Table
     df_manager = df_sec_master[['Manager']].dropna().drop_duplicates()
-    df_manager.columns = ['CLO/ABS Debt']
+    df_manager.columns = ['Manager Name']
     print('df_manager ', df_manager.shape)
 
     # Prepare the transaction table
