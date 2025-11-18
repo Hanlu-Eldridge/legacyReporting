@@ -125,17 +125,33 @@ def process_raw_data(inputdir: str, choices_port: list, target_portfolio_list: l
 def generate_excel_report(date: str, inputdir: str, outputdir: str):
     # change this if using different portfolio
     # ============================configuration section FOR SBL_Strategy Report=========================
+    """
     choices_port = ['43CH;IG CLO Strategy', '43CH;IG CLO Strategy', '44K8;HY CLO Strategy', '44F6;Atypical CLO Strategy', '44D7;ABS Strategy',
                     '44D7;ABS Strategy']
     target_portfolio_list = ['SBL_103_103', 'SBL_404_404', 'SBL_111_111', 'SBL_107_107','SBL_104_104','SBL_105_105']
     output_filename = 'SBL_Strategy'
     template_filename = 'SBL_CLO_100_Template.xlsx'
-    holdings_file = 'Panagram Holding File 09-30-2025.xlsx'
-    transaction_file = 'Security Transactions_20250930.xlsx'
-    input_from_jared = 'Data_request_20250930.csv'
+    holdings_file = 'Panagram Holding File 10-31-2025.xlsx'
+    transaction_file = 'Security Transactions_20251031.xlsx'
+    input_from_jared = 'Data_request_20251031.csv'
     manager_table_start = 'B55'
 
-    # ============================configuration section=========================
+    """
+    # ============================configuration section FOR SkyRidge Report=========================
+
+    #"""
+    choices_port = ['44G8/813/IG CLO FWH', '44G9/814/ABS FWH', '44H1/815/Atypical FWH', '44I4/816/HY CLOs FWH', 'P44I5/817/HY CLOs OC', '44J6/821/IG CLO OC',
+                   '44J7/822/ABS OC', '44J5/823/Atypical OC']
+    target_portfolio_list = ['SBL_813_813','SBL_814_814','SBL_815_815','SBL_816_816','SBL_817_817','SBL_821_821','SBL_822_822','SBL_823_823']
+    output_filename = 'SkyRidge_CLO_ABS'
+    template_filename = 'SkyRidge_CLO_ABS_Template.xlsx'
+    holdings_file = 'Panagram Holding File 10-31-2025.xlsx'
+    transaction_file = 'Security Transactions_20251031.xlsx'
+    input_from_jared = 'Data_request_20251031.csv'
+    manager_table_start = 'B38'
+    #"""
+
+    # ============================configuration section End=========================
     formatted_date = date.strftime("%m-%d-%Y")
     # get all the raw data tables
     df_transaction, df_positions, df_sec_master = process_raw_data(inputdir, choices_port, target_portfolio_list, holdings_file, transaction_file, input_from_jared)
