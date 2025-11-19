@@ -85,12 +85,12 @@ def process_raw_data(inputdir: str, choices_port: list, target_portfolio_list: l
 
     # creating positions table
     df_positions = df_holding[
-        ['Portfolio Code', 'CUSIP', 'Current Face', 'BASEMarket Value', 'BASEOriginal Cost', 'Issuer Name',
-         'Coupon Rate', 'Security Description', 'Maturity Date', 'Spread', 'Factor','Yield']]
+        ['Portfolio Code','Investment Type', 'CUSIP', 'Current Face', 'BASEMarket Value', 'BASEOriginal Cost', 'Issuer Name',
+         'Coupon Rate', 'Security Description', 'Maturity Date', 'Spread', 'Factor']]
 
 
     df_positions['Portfolio_Name'] = df_positions['Portfolio Code'].map(map_dict).fillna('Other')
-    df_positions = pd.merge(df_positions, df_sec_master[['Row Labels', 'Manager', 'WAL','Implied DM','Vintage','Collateral Type', 'Tranche Rating']].drop_duplicates(), how='left',
+    df_positions = pd.merge(df_positions, df_sec_master[['Row Labels', 'Manager', 'WAL', 'Tranche Rating']].drop_duplicates(), how='left',
                             left_on='CUSIP',
                             right_on='Row Labels')
 
@@ -123,20 +123,6 @@ def process_raw_data(inputdir: str, choices_port: list, target_portfolio_list: l
 
 
 def generate_excel_report(date: str, inputdir: str, outputdir: str):
-    # change this if using different portfolio
-    # ============================configuration section FOR SBL_Strategy Report=========================
-    """
-    choices_port = ['43CH;IG CLO Strategy', '43CH;IG CLO Strategy', '44K8;HY CLO Strategy', '44F6;Atypical CLO Strategy', '44D7;ABS Strategy',
-                    '44D7;ABS Strategy']
-    target_portfolio_list = ['SBL_103_103', 'SBL_404_404', 'SBL_111_111', 'SBL_107_107','SBL_104_104','SBL_105_105']
-    output_filename = 'SBL_Strategy'
-    template_filename = 'SBL_CLO_100_Template.xlsx'
-    holdings_file = 'Panagram Holding File 10-31-2025.xlsx'
-    transaction_file = 'Security Transactions_20251031.xlsx'
-    input_from_jared = 'Data_request_20251031.csv'
-    manager_table_start = 'B55'
-
-    """
     # ============================configuration section FOR SkyRidge Report=========================
 
     #"""
@@ -146,7 +132,7 @@ def generate_excel_report(date: str, inputdir: str, outputdir: str):
     output_filename = 'SkyRidge_CLO_ABS'
     template_filename = 'SkyRidge_CLO_ABS_Template.xlsx'
     holdings_file = 'Panagram Holding File 10-31-2025.xlsx'
-    transaction_file = 'Security Transactions_20251031.xlsx'
+    transaction_file = 'Security Transactions_sky20251031.xlsx'
     input_from_jared = 'Data_request_20251031.csv'
     manager_table_start = 'B38'
     #"""
