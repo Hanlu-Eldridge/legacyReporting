@@ -158,7 +158,7 @@ def generate_excel_report(date: str, inputdir: str, outputdir: str):
     df_transaction['Settle Date'] = pd.to_datetime(df_transaction['Settle Date']).dt.strftime("%m-%d-%Y")
 
     # Prepare the paydown table
-    df_paydown = df_transaction[df_transaction['Type'].isin(['Paydown', 'Call'])]
+    df_paydown = df_transaction[~df_transaction['Type'].isin(['SELL', 'BUY'])]
     df_paydown = (df_paydown[['Type', 'Security ID', 'Security Description', 'Settle Date']]
     .drop_duplicates()
     .groupby(['Type', 'Security ID', 'Security Description'],
