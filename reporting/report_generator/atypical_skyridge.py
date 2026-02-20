@@ -126,14 +126,15 @@ def generate_excel_report(date: str, inputdir: str, outputdir: str):
     # ============================configuration section FOR SkyRidge Report=========================
 
     #"""
-    choices_port = ['44G8/813/IG CLO FWH', '44G9/814/ABS FWH', '44H1/815/Atypical FWH', '44I4/816/HY CLOs FWH', 'P44I5/817/HY CLOs OC', '44J6/821/IG CLO OC',
-                   '44J7/822/ABS OC', '44J5/823/Atypical OC']
-    target_portfolio_list = ['SBL_813_813','SBL_814_814','SBL_815_815','SBL_816_816','SBL_817_817','SBL_821_821','SBL_822_822','SBL_823_823']
+    choices_port = ['44G8/813/IG CLO FWH', '44G9/814/ABS FWH', '44H1/815/Atypical FWH', '44I4/816/HY CLOs FWH', 'P44I5/817/HY CLOs OC', '44J6/821/IG CLO OC','44J7/822/ABS OC', '44J5/823/Atypical OC'
+        , '44O8/853/CLO FWH','44O9/854/ABS FWH','44P1/855/ATYP FWH','44P2/856/HY CLO FWH','44P4/857/HY CLO OC','44P5/858/CLO OC','44P6/859/ABS OC','44P7/860/ATYP OC']
+    target_portfolio_list = ['SBL_813_813','SBL_814_814','SBL_815_815','SBL_816_816','SBL_817_817','SBL_821_821','SBL_822_822','SBL_823_823'
+                             ,'SBL_853_853', 'SBL_854_854', 'SBL_855_855', 'SBL_856_856', 'SBL_857_857', 'SBL_858_858', 'SBL_859_859', 'SBL_860_860']
     output_filename = 'SkyRidge_CLO_ABS'
     template_filename = 'SkyRidge_CLO_ABS_Template.xlsx'
-    holdings_file = 'Panagram Holding File 10-31-2025.xlsx'
-    transaction_file = 'Security Transactions_sky20251031.xlsx'
-    input_from_jared = 'Data_request_20251031.csv'
+    holdings_file = 'Panagram Holding File 01-30-2026.xlsx'
+    transaction_file = 'Security Transactions_SKY_20260130.xlsx'
+    input_from_jared = 'Data_request_20260130.csv'
     manager_table_start = 'B38'
     #"""
 
