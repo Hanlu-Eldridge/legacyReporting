@@ -132,9 +132,9 @@ def generate_excel_report(date: str, inputdir: str, outputdir: str):
     target_portfolio_list = ['SBL_103_103', 'SBL_404_404', 'SBL_111_111', 'SBL_107_107','SBL_104_104','SBL_105_105']
     output_filename = 'SBL_Strategy'
     template_filename = 'SBL_CLO_100_Template.xlsx'
-    holdings_file = 'Panagram Holding File 01-30-2026.xlsx'
-    transaction_file = 'Security Transactions_SBL_20260130.xlsx'
-    input_from_jared = 'Data_request_20260130.csv'
+    holdings_file = 'PanagramHolding_Client_PANAGRAM_20260430.xlsx'
+    transaction_file = 'Security Transactions_SBL_20260430.xlsx'
+    input_from_jared = 'Data_request_20260430.csv'
     manager_table_start = 'B55'
 
     #"""
